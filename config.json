@@ -1,0 +1,20 @@
+{
+    "nome":"Sofia",
+    "perguntas": [
+        {
+            "nome":"O que foi o renascimento"
+        },
+        {
+            "nome":"Quais as características do renascimento"
+        },
+        {
+            "nome":"Qual país é considerado o berço do renascimento"
+        },
+        {
+            "nome":"O que foi o Antropocentrismo"
+        },
+        {
+            "nome":"Quais os principais artistas renascentistas"
+        }
+    ]
+}
