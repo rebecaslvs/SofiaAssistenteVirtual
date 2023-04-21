@@ -2,3 +2,4 @@ SpeechRecognition
 pyaudio
 nltk
 unidecode
+wikipedia

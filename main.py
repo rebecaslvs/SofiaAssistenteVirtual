@@ -3,7 +3,7 @@ import json
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from unidecode import unidecode
-
+import wikipedia
 
 with open('config.json', mode='r', encoding='utf-8') as arquivoConfiguracoes:
     config = json.load(arquivoConfiguracoes)
@@ -36,16 +36,18 @@ def verificarPergunta(texto):
     for stop_word in stop_words:
         if stop_word in textoFormatado:
             textoFormatado.remove(stop_word)
-    textoSemPrefixoAssistente = " ".join(textoFormatado)
-    print(textoSemPrefixoAssistente)
-    print(formatarPerguntasConfig(perguntas))
+    textoFormatado = " ".join(textoFormatado)
     for pergunta in formatarPerguntasConfig(perguntas):
-        print(pergunta)
-        if pergunta == textoSemPrefixoAssistente:
+        if pergunta == textoFormatado:
             print("Achei a pergunta")
+            buscarConteudo(textoSemPrefixoAssistente)
             break
-        else:
-            print("Não achei a pergunta")
+
+
+def buscarConteudo(texto):
+    wikipedia.set_lang("pt")
+    conteudo = wikipedia.page(texto)
+    print(conteudo.content)
 
 
 r = sr.Recognizer()
