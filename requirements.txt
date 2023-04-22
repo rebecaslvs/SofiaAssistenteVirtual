@@ -2,4 +2,7 @@ SpeechRecognition
 pyaudio
 nltk
 unidecode
+beautifulsoup4
 wikipedia
+pyttsx3
+
