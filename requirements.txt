@@ -5,4 +5,5 @@ unidecode
 beautifulsoup4
 wikipedia
 pyttsx3
+pyfiglet
 
