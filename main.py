@@ -1,13 +1,17 @@
 import speech_recognition as sr
 import json
-# from nltk.tokenize import word_tokenize
-# from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
 # from unidecode import unidecode
 # from bs4 import BeautifulSoup
 import wikipedia
-import pyttsx3
 from difflib import SequenceMatcher
 import pyfiglet
+
+# SE for a primeira vez, precisa fazer download dos pacaotes adicionais
+# import nltk
+# nltk.download('punkt')
+# nltk.download('stopwords')
 
 figlet = pyfiglet.Figlet()
 
@@ -19,35 +23,6 @@ perguntas = []
 for pergunta in config['perguntas']:
     perguntas.append(pergunta["nome"])
 
-
-# def formatarPerguntasConfig(perguntas):
-#     perguntasFormatadas = []
-#     stop_words = set(stopwords.words('portuguese'))
-#     for pergunta in perguntas:
-#         perguntaFormatada = pergunta.lower()
-#         perguntaFormatada = word_tokenize(unidecode(perguntaFormatada))
-#         for stop_word in stop_words:
-#             if stop_word in perguntaFormatada:
-#                 perguntaFormatada.remove(stop_word)
-#         pergunta = " ".join(perguntaFormatada)
-#         perguntasFormatadas.append(pergunta)
-#     return perguntasFormatadas
-
-
-# def verificarPergunta(texto):
-#     textoSemPrefixoAssistente = texto.replace(prefixoAssistente, "")
-#     stop_words = set(stopwords.words('portuguese'))
-#     textoFormatado = textoSemPrefixoAssistente.lower()
-#     textoFormatado = word_tokenize(unidecode(textoFormatado))
-#     for stop_word in stop_words:
-#         if stop_word in textoFormatado:
-#             textoFormatado.remove(stop_word)
-#     textoFormatado = " ".join(textoFormatado)
-#     for pergunta in formatarPerguntasConfig(perguntas):
-#         if pergunta == textoFormatado:
-#             print("Aguarde...")
-#             buscarConteudo(textoSemPrefixoAssistente)
-#             break
 
 def verificarPergunta(texto):
     texto = texto.replace(prefixoAssistente.lower(), '')
@@ -62,24 +37,29 @@ def compararTextos(texto1, texto2):
     return SequenceMatcher(None, texto1, texto2).ratio()
 
 
-# def buscarConteudo(texto):
-#     wikipedia.set_lang("pt")
-#     conteudo = wikipedia.page(texto)
-#     soup = BeautifulSoup(conteudo.html(), 'html.parser')
-#     respostaEsperada = soup.find('p').text
-#     print(respostaEsperada)
-#     engine = pyttsx3.init()
-#     engine.say(respostaEsperada)
-#     engine.runAndWait()
+def formatarTexto(texto):
+    stop_words = set(stopwords.words('portuguese'))
+    tokens = word_tokenize(texto)
+    for stop_word in stop_words:
+        if stop_word in tokens:
+            tokens.remove(stop_word)
+    return " ".join(tokens)
+
 
 def buscarConteudo(texto):
+    textoFormatado = formatarTexto(texto)
     try:
         wikipedia.set_lang("pt")
-        conteudo = wikipedia.summary(texto, sentences=2)
+        conteudo = wikipedia.summary(textoFormatado, sentences=2)
         print(conteudo)
         return conteudo
     except Exception as e:
-        print("Erro ao buscar conteúdo: " + str(e))
+        conteudo = wikipedia.search(textoFormatado)
+        if len(conteudo) > 0:
+            print("Buscando por: " + conteudo[0])
+            buscarConteudo(conteudo[0])
+        else:
+            print("Erro ao buscar conteúdo: " + str(e))
 
 
 def iniciarAssistente():
