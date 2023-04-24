@@ -28,9 +28,11 @@ def verificarPergunta(texto):
     texto = texto.replace(prefixoAssistente.lower(), '')
     for pergunta in perguntas:
         if compararTextos(pergunta, texto) > 0.7:
-            print("Pergunta encontrada: " + pergunta)
+            print("Aguarde...")
             buscarConteudo(pergunta)
             return pergunta
+        else:
+            print("Desculpa, não encontrei a sua pergunta.")
 
 
 def compararTextos(texto1, texto2):
@@ -58,7 +60,7 @@ def buscarConteudo(texto):
         if len(conteudo) > 0:
             print("Buscando por: " + conteudo[0])
             buscarConteudo(conteudo[0])
-        else:
+
             print("Erro ao buscar conteúdo: " + str(e))
 
 
@@ -67,9 +69,9 @@ def iniciarAssistente():
     r = sr.Recognizer()
     while looping:
         with sr.Microphone() as source:
-            print("Diga alguma coisa: ")
+            print("\nPor gentileza, diga a sua dúvida: ")
             r.adjust_for_ambient_noise(source)
-            audio = r.listen(source, timeout=5)
+            audio = r.listen(source, timeout=7)
             try:
                 texto = r.recognize_google(audio, language='pt-BR')
                 if "desligar" in texto.lower():
@@ -79,11 +81,12 @@ def iniciarAssistente():
                 if texto.lower().startswith(prefixoAssistente.lower()):
                     verificarPergunta(texto)
             except:
-                print("Não entendi")
+                print("Desculpa, não entendi.")
                 looping = False
 
 
 if __name__ == '__main__':
     print(figlet.renderText(prefixoAssistente))
-    # adicionar legendas - mensagens de boas-vindas
+    print("Olá, eu me chamo Sofia e sou a sua assistente virtual.")
+    print("Estou aqui para te ajudar a sanar dúvidas sobre o período do renascimento.\n")
     iniciarAssistente()
