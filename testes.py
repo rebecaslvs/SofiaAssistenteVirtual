@@ -38,8 +38,8 @@ class TestAssistente(unittest.TestCase):
 
     def test_formatarTexto(self):
         texto = "o que foi o renascimento"
-        resultadoExperado = "o renascimento"
-        self.assertEqual(main.formatarTexto(texto), resultadoExperado)
+        resultadoEsperado = "o renascimento"
+        self.assertEqual(main.formatarTexto(texto)git, resultadoEsperado)
 
 
 if __name__ == '__main__':

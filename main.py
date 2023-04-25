@@ -1,19 +1,17 @@
-import speech_recognition as sr
-import json
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
-# from unidecode import unidecode
-# from bs4 import BeautifulSoup
-import wikipedia
-from difflib import SequenceMatcher
-import pyfiglet
+import speech_recognition as sr  # reconhecimento de voz
+import json  # manipulação de arquivos json
+from nltk.tokenize import word_tokenize  # tokenização de texto
+from nltk.corpus import stopwords  # stopwords em português
+import wikipedia  # busca de conteúdo na wikipedia
+from difflib import SequenceMatcher  # realiza a comparação de textos
+import pyfiglet  # gera textos em ascii art
 
-# SE for a primeira vez, precisa fazer download dos pacaotes adicionais
-# import nltk
+# Caso seja a primeira vez em que está rodando o código, é necessário fazer o download dos pacotes adicionais
+# import nltk # biblioteca de processamento de linguagem natural
 # nltk.download('punkt')
 # nltk.download('stopwords')
 
-figlet = pyfiglet.Figlet()
+figlet = pyfiglet.Figlet()  # objeto que gera textos em ascii art
 
 with open('config.json', mode='r', encoding='utf-8') as arquivoConfiguracoes:
     config = json.load(arquivoConfiguracoes)
@@ -31,8 +29,6 @@ def verificarPergunta(texto):
             print("Aguarde...")
             buscarConteudo(pergunta)
             return pergunta
-        else:
-            print("Desculpa, não encontrei a sua pergunta.")
 
 
 def compararTextos(texto1, texto2):
@@ -55,13 +51,8 @@ def buscarConteudo(texto):
         conteudo = wikipedia.summary(textoFormatado, sentences=2)
         print(conteudo)
         return conteudo
-    except Exception as e:
-        conteudo = wikipedia.search(textoFormatado)
-        if len(conteudo) > 0:
-            print("Buscando por: " + conteudo[0])
-            buscarConteudo(conteudo[0])
-
-            print("Erro ao buscar conteúdo: " + str(e))
+    except:
+        print("Desculpa, não consegui buscar este conteúdo.")
 
 
 def iniciarAssistente():
